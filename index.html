@@ -111,7 +111,7 @@
               <papertitle>Counterfactual Image Generation Using Text Guidance</papertitle>
               </a>
               <br>
-              <em>Ongoing project under <a href="#">Prof.Sutanu Chakraborti</a>, Indian Institute of Technology Madras (Nov 2022 - Present)</em>
+              <em>Ongoing project under <a href="#">Prof. Sutanu Chakraborti</a>, Indian Institute of Technology Madras (Nov 2022 - Present)</em>
               <p>
               Aimed at generating counterfactuals conditioned on the initial image, and a text prompt to control its several attributes while minimally altering the image.
               We propose to perform image inpainting on regions corresponding to high confidence towards the target class using Stable Diffusion and CLIP models.
@@ -126,23 +126,81 @@
 					
           <tr>
             <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/phase.png" width="160"></td>
+            <td width="75%" valign="center">
+              <a href="#">
+              <papertitle>PHASE: 3D Surface Mesh Reconstruction</papertitle>
+              </a>
+              <br>
+              <em>Project under <a href="#">Mr. Siddarth Jha</a>, Preimage.ai (April 2022 - May 2022)</em>
+              <p>
+                Implemented an implicit 3D reconstruction neural network that constructs a surface mesh using its point cloud
+                data. The network is trained to find the occupancy metric of different point coordinates in the point cloud, in
+                turn finding the points present on the surface during inference.
+              </p>
+            </td>
+          </tr>
+          
+          <tr onmouseout="defect_stop()" onmouseover="defect_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle;">
+                <div class="one">
+                    <div class="two" id='defect_image'>
+                        <img src='images/defectdetection_prediction.png' width="160"></div>
+                    <img src='images/defectdetection_actual.png' width="160">
+                </div>
+                <script type="text/javascript">
+                    function defect_start() {
+                        document.getElementById('defect_image').style.opacity = "1";
+                    }
+                function defect_stop() {
+                    document.getElementById('defect_image').style.opacity = "0";
+                }
+                defect_stop()
+                </script>
+            </td>
+            <td width="75%" valign="center">
+              <a href="#">
+              <papertitle>Steel Surface Defect Detection and Classification</papertitle>
+              </a>
+              <br>
+              <em>Project under <a href="#">Prof. Somashekhar</a>, Indian Institute of Technology Madras (Sept 2020 - Nov 2020)</em>
+              <p>
+                Involves performing semantic segmentation on pictures of steel surfaces to classify and localize the surface
+                defects using the UNET architecture. Got an average of 95 - 97% IOU score.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
               <img src="images/fewshotgan.png" width="160"></td>
             <td width="75%" valign="center">
               <a href="#">
               <papertitle>Few-Shot Image Synthesis using Generative Networks</papertitle>
               </a>
               <br>
-              <em>Project under <a href="#">Prof.Anurag Mittal</a>, Indian Institute of Technology Madras (Sept 2020 - Nov 2020)</em>
+              <em>Project under <a href="#">Prof. Anurag Mittal</a>, Indian Institute of Technology Madras (Sept 2020 - Nov 2020)</em>
               <p>
                 Simplified SOTA generative networks namely StyleGanv1,2 to lower network capacity and introduced dense
                 connections between multiple resolutions. Improved perceptual image quality scores by 10% even with as little
                 as 100-1000 training images.
               </p>
             </td>
-          </tr>			
+          </tr>
 					
           </tbody>
         </table>
+
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr>
+          <td style="padding:20px;width:100%;vertical-align:middle">
+            <heading>Research</heading>
+            <p>
+              I'm interested in computational imaging problems with a strong physics component, often involving microscopy, scattering media and medical image reconstruction. I've previously worked on compressed sensing for antenna array fault diagnosis in the context of wireless communication systems.
+            </p>
+          </td>
+        </tr>
+      </tbody></table>
 <!-- 
         <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">     
           <tbody>
