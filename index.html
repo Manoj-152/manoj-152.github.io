@@ -1,14 +1,36 @@
-<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <!-- MODIFIED: Changed viewport to force desktop width -->
-    <meta name="viewport" content="width=1024, initial-scale=1.0">
+    <!-- MODIFIED: Forced desktop viewport -->
+    <meta name="viewport" content="width=1024">
     <title>Manoj Srinivasan - AI/ML Engineer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ADDED: Dark Mode Config Script -->
+    <script>
+        // Set 'darkMode: "class"' in Tailwind config
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+
+        // Apply dark mode immediately based on localStorage or OS preference
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+    </script>
+    
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -27,9 +49,14 @@
             margin-left: 4px;
             position: relative;
             bottom: -2px;
+            /* ADDED: Smooth color transition */
+            transition: background-color 0.3s ease;
         }
         
-        /* REMOVED: Subtitle cursor style */
+        /* ADDED: Dark mode cursor color */
+        .dark .typing-cursor {
+            background-color: #3b82f6; /* blue-500 */
+        }
 
         @keyframes blink {
             0%, 100% { opacity: 1; }
@@ -48,28 +75,41 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<!-- MODIFIED: Added dark mode classes and transitions -->
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
 
-    <!-- Header / Navigation -->
-    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
+    <!-- MODIFIED: Added dark mode classes and transitions -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 dark:bg-gray-900/90 dark:shadow-gray-800 transition-colors duration-300">
         <div class="container mx-auto px-6 py-4 max-w-7xl">
             <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-900">
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
                     <a href="#">Manoj Srinivasan</a>
                 </h1>
                 
                 <!-- Desktop Navigation -->
-                <div class="hidden md:flex space-x-6">
-                    <a href="#about" class="text-gray-600 hover:text-blue-600 font-medium">About</a>
-                    <a href="#experience" class="text-gray-600 hover:text-blue-600 font-medium">Experience</a>
-                    <a href="#education" class="text-gray-600 hover:text-blue-600 font-medium">Education</a>
-                    <a href="#projects" class="text-gray-600 hover:text-blue-600 font-medium">Projects</a>
-                    <a href="Assets/Manoj_Srinivasan_Resume.pdf" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-blue-600 font-medium">Resume</a>
+                <!-- MODIFIED: Added dark mode classes, transitions, and toggle button -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#about" class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 font-medium transition-colors duration-300">About</a>
+                    <a href="#experience" class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 font-medium transition-colors duration-300">Experience</a>
+                    <a href="#education" class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 font-medium transition-colors duration-300">Education</a>
+                    <a href="#projects" class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 font-medium transition-colors duration-300">Projects</a>
+                    <a href="Assets/Manoj_Srinivasan_Resume.pdf" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 font-medium transition-colors duration-300">Resume</a>
+                    
+                    <!-- ADDED: Dark Mode Toggle Button -->
+                    <button id="theme-toggle" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none transition-colors duration-300">
+                        <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    </button>
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <div class="md:hidden">
-                    <button id="mobile-menu-button" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                <!-- MODIFIED: Wrapped buttons in flex container, added mobile toggle -->
+                <div class="md:hidden flex items-center space-x-4">
+                    <button id="theme-toggle-mobile" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none transition-colors duration-300">
+                        <svg id="theme-toggle-dark-icon-mobile" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                        <svg id="theme-toggle-light-icon-mobile" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    </button>
+                    <button id="mobile-menu-button" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus:outline-none transition-colors duration-300">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
@@ -78,12 +118,13 @@
             </div>
             
             <!-- Mobile Menu (Hidden by default) -->
+            <!-- MODIFIED: Added dark mode classes and transitions -->
             <div id="mobile-menu" class="hidden md:hidden mt-4">
-                <a href="#about" class="block py-2 px-3 text-gray-600 hover:bg-gray-100 rounded-md font-medium">About</a>
-                <a href="#experience" class="block py-2 px-3 text-gray-600 hover:bg-gray-100 rounded-md font-medium">Experience</a>
-                <a href="#education" class="block py-2 px-3 text-gray-600 hover:bg-gray-100 rounded-md font-medium">Education</a>
-                <a href="#projects" class="block py-2 px-3 text-gray-600 hover:bg-gray-100 rounded-md font-medium">Projects</a>
-                <a href="Assets/Manoj_Srinivasan_Resume.pdf" target="_blank" rel="noopener noreferrer" class="block py-2 px-3 text-gray-600 hover:bg-gray-100 rounded-md font-medium">Resume</a>
+                <a href="#about" class="block py-2 px-3 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md font-medium transition-colors duration-300">About</a>
+                <a href="#experience" class="block py-2 px-3 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md font-medium transition-colors duration-300">Experience</a>
+                <a href="#education" class="block py-2 px-3 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md font-medium transition-colors duration-300">Education</a>
+                <a href="#projects" class="block py-2 px-3 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md font-medium transition-colors duration-300">Projects</a>
+                <a href="Assets/Manoj_Srinivasan_Resume.pdf" target="_blank" rel="noopener noreferrer" class="block py-2 px-3 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md font-medium transition-colors duration-300">Resume</a>
             </div>
         </div>
     </nav>
@@ -92,34 +133,32 @@
     <header id="home" class="container mx-auto px-6 py-24 md:py-32 max-w-7xl">
         <div class="flex flex-col-reverse md:flex-row items-center gap-12">
             <!-- Left Column (Text) -->
+            <!-- MODIFIED: Added dark mode text, transitions, and responsive text wrapping -->
             <div class="md:w-3/5 text-center md:text-left">
-                <!-- MODIFIED: Added id="typing-title" and min-height to prevent layout shift -->
-                <h2 id="typing-title" class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight" style="min-height: 1.2em;">
+                <h2 id="typing-title" class="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight transition-colors duration-300 break-words" style="min-height: 1.2em;">
                     <!-- Content will be injected by JS -->
                 </h2>
-                <!-- REMOVED: id="typing-subtitle" from p tag -->
-                <p class="text-xl md:text-2xl font-medium text-blue-600 mt-3">
+                <p class="text-xl md:text-2xl font-medium text-blue-600 dark:text-blue-400 mt-3 transition-colors duration-300 break-words">
                     AI/ML Engineer specializing in Computer Vision & Generative AI
                 </p>
-                <p class="mt-6 text-lg text-gray-700 max-w-xl mx-auto md:mx-0">
+                <p class="mt-6 text-lg text-gray-700 dark:text-gray-300 max-w-xl mx-auto md:mx-0 transition-colors duration-300 break-words">
                     Solving complex engineering problems through ML, computer vision, and generative AI — NYU & IIT Madras alum | Intel award-winning intern | Research Assistant at NYU
                 </p>
-                <div class="mt-8 flex justify-center md:justify-start gap-4">
-                    <!-- Swapped styles and order -->
-                    <a href="#projects" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors">
+                <div class="mt-8 flex flex-wrap justify-center md:justify-start gap-4">
+                    <a href="#projects" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors duration-300">
                         View my projects
                     </a>
-                    <a href="#experience" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg shadow-md border border-gray-300 hover:bg-gray-100 transition-colors">
+                    <a href="#experience" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg shadow-md border border-gray-300 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700 transition-colors duration-300">
                         View my experience
                     </a>
-                    <a href="Assets/Manoj_Srinivasan_Resume.pdf" target="_blank" rel="noopener noreferrer" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg shadow-md border border-gray-300 hover:bg-gray-100 transition-colors">
+                    <a href="Assets/Manoj_Srinivasan_Resume.pdf" target="_blank" rel="noopener noreferrer" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg shadow-md border border-gray-300 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700 transition-colors duration-300">
                         Download resume
                     </a>
                 </div>
             </div>
             <!-- Right Column (Image) -->
             <div class="md:w-2/5 flex justify-center flex-shrink-0">
-                <div class="relative"> <!-- Added relative container for icons -->
+                <div class="relative"> 
                     <img 
                         src="Assets/Manoj S-circle.png" 
                         alt="A portrait of Manoj Srinivasan"
@@ -127,29 +166,25 @@
                         onerror="this.src='https://placehold.co/400x400/e0e7ff/4338ca?text=Your+Photo'; this.onerror=null;"
                     >
                     <!-- Contact Icons -->
+                    <!-- MODIFIED: Added dark mode classes and transitions -->
                     <div class="flex justify-center gap-6 mt-6">
-                        <!-- LinkedIn -->
-                        <a href="https://linkedin.com/in/manoj-s-nyu" target="_blank" rel="noopener noreferrer" class="text-blue-700 hover:text-blue-800 transition-colors" aria-label="LinkedIn">
+                        <a href="https://linkedin.com/in/manoj-s-nyu" target="_blank" rel="noopener noreferrer" class="text-blue-700 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300" aria-label="LinkedIn">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/>
                             </svg>
                         </a>
-                        <!-- GitHub -->
-                        <a href="https://github.com/manoj-152" target="_blank" rel="noopener noreferrer" class="text-gray-900 hover:text-gray-700 transition-colors" aria-label="GitHub">
+                        <a href="https://github.com/manoj-152" target="_blank" rel="noopener noreferrer" class="text-gray-900 hover:text-gray-700 dark:text-gray-100 dark:hover:text-gray-300 transition-colors duration-300" aria-label="GitHub">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.109-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" clip-rule="evenodd"/>
                             </svg>
                         </a>
-                        <!-- Email -->
-                        <a href="mailto:ms14845@nyu.edu" class="text-red-600 hover:text-red-700 transition-colors" aria-label="Email">
+                        <a href="mailto:ms14845@nyu.edu" class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400 transition-colors duration-300" aria-label="Email">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/>
                             </svg>
                         </a>
-                        <!-- Google Scholar -->
-                        <a href="https://scholar.google.com/citations?user=your-id" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-blue-600 transition-colors" aria-label="Google Scholar">
-                            <!-- Replaced silhouette SVG with <img> tag -->
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Scholar_logo.svg" alt="Google Scholar" class="w-8 h-8">
+                        <a href="https://scholar.google.com/citations?user=your-id" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-all duration-300" aria-label="Google Scholar">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Scholar_logo.svg" alt="Google Scholar" class="w-8 h-8 dark:brightness-200 transition-all duration-300">
                         </a>
                     </div>
                 </div>
@@ -157,16 +192,14 @@
         </div>
     </header>
 
-    <!-- MODIFIED: Added scroll-animate class -->
-    <section id="about" class="bg-white py-20 md:py-24 scroll-animate">
+    <!-- MODIFIED: Added dark mode classes and transitions -->
+    <section id="about" class="bg-white py-20 md:py-24 scroll-animate dark:bg-gray-800 transition-colors duration-300">
         <div class="container mx-auto px-6 max-w-7xl">
-            <h3 class="text-3xl font-bold text-center text-gray-900">About Me</h3>
+            <h3 class="text-3xl font-bold text-center text-gray-900 dark:text-white transition-colors duration-300">About Me</h3>
             
-            <div class="mt-12 max-w-5xl mx-auto"> <!-- CHANGED: max-w-3xl to max-w-5xl -->
-                
-                <!-- Left Column: About Me Text -->
-                <div class="lg:w-full"> <!-- Changed from lg:w-2/3 -->
-                    <div class="text-left text-lg text-gray-700 space-y-4">
+            <div class="mt-12 max-w-5xl mx-auto"> 
+                <div class="lg:w-full"> 
+                    <div class="text-left text-lg text-gray-700 dark:text-gray-300 space-y-4 transition-colors duration-300">
                        <p>
                             👋 Hello! I'm Manoj, an AI/ML engineer who thrives on solving complex challenges where computer vision, generative AI, and 3D rendering intersect. My passion isn't just research — it's turning cutting-edge ideas into practical, impactful solutions.
                         </p>
@@ -184,216 +217,194 @@
                         </p>
                     </div>
                 </div>
-
-                <!-- Right Column: Affiliations (REMOVED) -->
-                
             </div>
         </div>
     </section>
 
-    <!-- MODIFIED: Added scroll-animate class -->
-    <section id="experience" class="bg-gray-50 py-20 md:py-24 scroll-animate">
+    <!-- MODIFIED: Added dark mode classes and transitions -->
+    <section id="experience" class="bg-gray-50 py-20 md:py-24 dark:bg-gray-900 transition-colors duration-300">
         <div class="container mx-auto px-6 max-w-7xl">
-            <h3 class="text-3xl font-bold text-center text-gray-900">Work Experience</h3>
-            <p class="text-lg text-gray-600 text-center mt-4 max-w-2xl mx-auto">
+            <h3 class="text-3xl font-bold text-center text-gray-900 dark:text-white transition-colors duration-300">Work Experience</h3>
+            <p class="text-lg text-gray-600 dark:text-gray-400 text-center mt-4 max-w-2xl mx-auto transition-colors duration-300">
                 A timeline of my professional roles and contributions.
             </p>
 
-            <!-- Timeline Container -->
-            <div class="mt-16 max-w-5xl mx-auto"> <!-- CHANGED: max-w-3xl to max-w-5xl -->
+            <div class="mt-16 max-w-5xl mx-auto"> 
                 <div class="relative space-y-12">
                     
-                    <div class="absolute left-3.5 top-2 bottom-0 w-1 bg-blue-100 rounded" aria-hidden="true"></div>
+                    <div class="absolute left-3.5 top-2 bottom-0 w-1 bg-blue-100 rounded dark:bg-gray-700 transition-colors duration-300" aria-hidden="true"></div>
 
-                    <!-- Timeline Item 1: NYU Video Lab -->
-                    <div class="relative">
-                        <!-- Timeline Dot (Adjusted border for gray bg) -->
-                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 flex items-center justify-center">
+                    <!-- MODIFIED: Added scroll-animate class -->
+                    <div class="relative scroll-animate">
+                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 dark:border-gray-900 transition-colors duration-300 flex items-center justify-center">
                         </div>
                         <div class="ml-12">
                             <div class="flex justify-between items-start gap-4">
-                                <!-- Grouping title and date -->
                                 <div>
-                                    <h4 class="text-xl font-semibold text-gray-900">Graduate Research Assistant, NYU Video Lab</h4>
-                                    <p class="text-md text-gray-600 mt-1">Aug 2025 – Present (New York City, NY)</p>
+                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Graduate Research Assistant, NYU Video Lab</h4>
+                                    <p class="text-md text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-300">Aug 2025 – Present (New York City, NY)</p>
                                 </div>
-                                <img src="Assets/nyu-logo.png" alt="NYU Logo" class="h-16 w-auto object-contain flex-shrink-0" /> <!-- CHANGED: h-12 to h-16 -->
+                                <img src="Assets/nyu-logo.png" alt="NYU Logo" class="h-16 w-auto object-contain flex-shrink-0" /> 
                             </div>
-                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700">
+                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700 dark:text-gray-300 transition-colors duration-300">
                                 <li>Implemented a pipeline integrating 2D <strong>video diffusion</strong> priors with <strong>3D Gaussian Splatting</strong> (3DGS), achieving a <strong>19% LPIPS improvement</strong> in novel-view synthesis under sparse input conditions.</li>
                                 <li>Enhanced 3D view consistency by formulating view generation as a temporal continuity task, integrating <strong>camera-pose embeddings</strong> with <strong>diffusion-guided latent features</strong> across viewpoints.</li>
                                 <li>Exploring <strong>mesh registration</strong> for human poses using learned skinning methods such as <strong>SMPL</strong>, to improve 3D consistency.</li>
                             </ul>
-                            <!-- Skills Pills -->
                             <div class="mt-5 flex flex-wrap gap-2">
-                                <span class="text-sm font-medium bg-red-100 text-red-800 px-3 py-1 rounded-full">Python</span>
-                                <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">PyTorch</span>
-                                <span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Computer Vision</span>
-                                <span class="text-sm font-medium bg-purple-100 text-purple-800 px-3 py-1 rounded-full">3D Gaussian Splatting</span>
-                                <span class="text-sm font-medium bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Diffusion Models</span>
-                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">HPC</span>
-                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Slurm</span>
-                                <span class="text-sm font-medium bg-gray-100 text-gray-800 px-3 py-1 rounded-full">Meshlab</span>
+                                <span class="text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-3 py-1 rounded-full transition-colors duration-300">Python</span>
+                                <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">PyTorch</span>
+                                <span class="text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full transition-colors duration-300">Computer Vision</span>
+                                <span class="text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full transition-colors duration-300">3D Gaussian Splatting</span>
+                                <span class="text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full transition-colors duration-300">Diffusion Models</span>
+                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full transition-colors duration-300">HPC</span>
+                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full transition-colors duration-300">Slurm</span>
+                                <span class="text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 px-3 py-1 rounded-full transition-colors duration-300">Meshlab</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Timeline Item 2: Intel -->
-                    <div class="relative">
-                        <!-- Timeline Dot (Adjusted border for gray bg) -->
-                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 flex items-center justify-center">
+                    <!-- MODIFIED: Added scroll-animate class -->
+                    <div class="relative scroll-animate">
+                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 dark:border-gray-900 transition-colors duration-300 flex items-center justify-center">
                         </div>
                         <div class="ml-12">
                             <div class="flex justify-between items-start gap-4">
-                                <!-- Grouping title and date -->
                                 <div>
-                                    <h4 class="text-xl font-semibold text-gray-900">Graduate Engineering Intern, Intel Corporation</h4>
-                                    <p class="text-md text-gray-600 mt-1">Jun 2024 – Aug 2024 (Santa Clara, CA)</p>
+                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Graduate Engineering Intern, Intel Corporation</h4>
+                                    <p class="text-md text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-300">Jun 2024 – Aug 2024 (Santa Clara, CA)</p>
                                 </div>
-                                <img src="Assets/intel-logo.png" alt="Intel Logo" class="h-12 w-auto object-contain flex-shrink-0" /> <!-- CHANGED: h-12 to h-16 -->
+                                <img src="Assets/intel-logo.png" alt="Intel Logo" class="h-12 w-auto object-contain flex-shrink-0" /> 
                             </div>
-                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700">
+                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700 dark:text-gray-300 transition-colors duration-300">
                                 <li>Developed a <strong>computer vision</strong> framework for automated detection of IC package design violations, emulating manually-performed inspection heuristics.</li>
                                 <li>Optimized computational efficiency using <strong>segmentation models</strong> and OpenCV's <strong>morphological algorithms</strong>, reducing detection pipeline runtime by <strong>85%</strong> (from >4 hours to <30 minutes).</li>
                                 <li>Honored with <strong>Intel’s Impact Award</strong> for strong productivity and delivering high-quality solutions in a short timeframe.</li>
                             </ul>
-                            <!-- Skills Pills -->
                             <div class="mt-5 flex flex-wrap gap-2">
-                                <span class="text-sm font-medium bg-red-100 text-red-800 px-3 py-1 rounded-full">Python</span>
-                                <span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Computer Vision</span>
-                                <span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Image Processing</span>
-                                <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">HuggingFace</span>
-                                <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">OpenCV</span>
-                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Xpedition</span>
-                                <span class="text-sm font-medium bg-red-100 text-red-800 px-3 py-1 rounded-full">VBScript</span>
+                                <span class="text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-3 py-1 rounded-full transition-colors duration-300">Python</span>
+                                <span class="text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full transition-colors duration-300">Computer Vision</span>
+                                <span class="text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full transition-colors duration-300">Image Processing</span>
+                                <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">HuggingFace</span>
+                                <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">OpenCV</span>
+                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full transition-colors duration-300">Xpedition</span>
+                                <span class="text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-3 py-1 rounded-full transition-colors duration-300">VBScript</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Timeline Item 3: IIT Madras -->
-                    <div class="relative">
-                        <!-- Timeline Dot (Adjusted border for gray bg) -->
-                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 flex items-center justify-center">
+                    <!-- MODIFIED: Added scroll-animate class -->
+                    <div class="relative scroll-animate">
+                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 dark:border-gray-900 transition-colors duration-300 flex items-center justify-center">
                         </div>
                         <div class="ml-12">
                             <div class="flex justify-between items-start gap-4">
-                                <!-- Grouping title and date -->
                                 <div>
-                                    <h4 class="text-xl font-semibold text-gray-900">Graduate Research Student, Indian Institute of Technology, Madras</h4>
-                                    <p class="text-md text-gray-600 mt-1">Aug 2022 – May 2023 (Chennai, India)</p>
+                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Graduate Research Student, Indian Institute of Technology, Madras</h4>
+                                    <p class="text-md text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-300">Aug 2022 – May 2023 (Chennai, India)</p>
                                 </div>
-                                <img src="Assets/iit-madras-logo.png" alt="IIT Madras Logo" class="h-16 w-auto object-contain flex-shrink-0" /> <!-- CHANGED: h-12 to h-16 -->
+                                <img src="Assets/iit-madras-logo.png" alt="IIT Madras Logo" class="h-16 w-auto object-contain flex-shrink-0" /> 
                             </div>
-                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700">
+                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700 dark:text-gray-300 transition-colors duration-300">
                                 <li>Proposed <strong>U2NeRF</strong>, a fully self-supervised transformer-based framework for joint <strong>underwater image restoration</strong> and <strong>neural 3D reconstruction</strong>, embedding physics-informed light modeling into the NeRF pipeline.</li>
                                 <li>Leveraged a <strong>disentangled representation</strong> of underwater degradations, which includes scene radiance, global illumination, and scattering maps, to enable accurate color and structure recovery in the absence of ground-truth supervision.</li>
                                 <li>Introduced <strong>patch-level rendering</strong> to address limitations of pixel-wise NeRF, enabling improved local spatial context modeling for underwater image restoration.</li>
                                 <li>Achieved state-of-the-art results on the newly curated Underwater View Synthesis (UVS) benchmark across 12 calibrated scenes, with <strong>+11% perceptual similarity</strong> and <strong>+4% restoration quality</strong> over prior methods.</li>
                                 <li>Developed as part of <strong>Master’s thesis</strong> at IIT Madras and later published at <strong>ICLR 2024</strong> (Tiny Papers Track).</li>
                             </ul>
-                            <!-- Skills Pills -->
                             <div class="mt-5 flex flex-wrap gap-2">
-                                <span class="text-sm font-medium bg-red-100 text-red-800 px-3 py-1 rounded-full">Python</span>
-                                <span class="text-sm font-medium bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Transformers</span>
-                                <span class="text-sm font-medium bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Neural Radiance Fields (NeRF)</span>
-                                <span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">3D Reconstruction</span>
-                                <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">PyTorch</span>
-                                <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">Distributed Data Parallel (DDP)</span>
+                                <span class="text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-3 py-1 rounded-full transition-colors duration-300">Python</span>
+                                <span class="text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full transition-colors duration-300">Transformers</span>
+                                <span class="text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full transition-colors duration-300">Neural Radiance Fields (NeRF)</span>
+                                <span class="text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full transition-colors duration-300">3D Reconstruction</span>
+                                <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">PyTorch</span>
+                                <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">Distributed Data Parallel (DDP)</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Timeline Item 4: Preimage -->
-                    <div class="relative">
-                        <!-- Timeline Dot (Adjusted border for gray bg) -->
-                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 flex items-center justify-center">
+                    <!-- MODIFIED: Added scroll-animate class -->
+                    <div class="relative scroll-animate">
+                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 dark:border-gray-900 transition-colors duration-300 flex items-center justify-center">
                         </div>
                         <div class="ml-12">
                             <div class="flex justify-between items-start gap-4">
-                                <!-- Grouping title and date -->
                                 <div>
-                                    <h4 class="text-xl font-semibold text-gray-900">Machine Learning Intern, Preimage</h4>
-                                    <p class="text-md text-gray-600 mt-1">Sep 2022 – Dec 2022 (Bangalore, India)</p>
+                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Machine Learning Intern, Preimage</h4>
+                                    <p class="text-md text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-300">Sep 2022 – Dec 2022 (Bangalore, India)</p>
                                 </div>
-                                <img src="Assets/preimage-logo.png" alt="Preimage Logo" class="h-14 w-auto object-contain flex-shrink-0" /> <!-- CHANGED: h-12 to h-16 -->
+                                <img src="Assets/preimage-logo.png" alt="Preimage Logo" class="h-14 w-auto object-contain flex-shrink-0" /> 
                             </div>
-                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700">
+                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700 dark:text-gray-300 transition-colors duration-300">
                                 <li>Adapted a <strong>transformer-based multi-view stereo (MVS)</strong> pipeline for dense 3D geometry reconstruction from aerial (drone) imagery, optimizing performance for sparse-view and large-scale outdoor scenes.</li>
                                 <li>Improved feature representation using an adaptive <strong>feature pyramid network (FPN)</strong> that leverages <strong>sinusoidal embeddings</strong> conditioned on scene-specific depth bounds, increasing reconstruction accuracy by ~10% in challenging outdoor scenarios.</li>
                                 <li>Deployed large-scale reconstruction experiments on <strong>Azure</strong> VMs, leveraging <strong>AWS S3</strong> for dataset management and <strong>PyTorch Lightning</strong> with CUDA for efficient distributed training.</li>
                             </ul>
-                            <!-- Skills Pills -->
                             <div class="mt-5 flex flex-wrap gap-2">
-                                <span class="text-sm font-medium bg-red-100 text-red-800 px-3 py-1 rounded-full">Python</span>
-                                <span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">3D Reconstruction</span>
-                                <span class="text-sm font-medium bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Transformers</span>
-                                <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">PyTorch Lightning</span>
-                                <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">PyTorch</span>
-                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Azure</span>
-                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">AWS S3</span>
+                                <span class="text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-3 py-1 rounded-full transition-colors duration-300">Python</span>
+                                <span class="text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full transition-colors duration-300">3D Reconstruction</span>
+                                <span class="text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full transition-colors duration-300">Transformers</span>
+                                <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">PyTorch Lightning</span>
+                                <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">PyTorch</span>
+                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full transition-colors duration-300">Azure</span>
+                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full transition-colors duration-300">AWS S3</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Timeline Item 5: Asilla Japan -->
-                    <div class="relative">
-                        <!-- Timeline Dot (Adjusted border for gray bg) -->
-                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 flex items-center justify-center">
+                    <!-- MODIFIED: Added scroll-animate class -->
+                    <div class="relative scroll-animate">
+                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 dark:border-gray-900 transition-colors duration-300 flex items-center justify-center">
                         </div>
-                        <div class="ml-12"> <!-- <-- This was the line with the typo -->
+                        <div class="ml-12"> 
                             <div class="flex justify-between items-start gap-4">
-                                <!-- Grouping title and date -->
                                 <div>
-                                    <h4 class="text-xl font-semibold text-gray-900">Machine Learning Intern, Asilla Japan</h4>
-                                    <p class="text-md text-gray-600 mt-1">May 2022 – Jul 2022 (Remote)</p>
+                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Machine Learning Intern, Asilla Japan</h4>
+                                    <p class="text-md text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-300">May 2022 – Jul 2022 (Remote)</p>
                                 </div>
-                                <img src="Assets/asilla-logo.png" alt="Asilla Japan Logo" class="h-16 w-auto object-contain flex-shrink-0" /> <!-- CHANGED: h-12 to h-16 -->
+                                <img src="Assets/asilla-logo.png" alt="Asilla Japan Logo" class="h-16 w-auto object-contain flex-shrink-0" /> 
                             </div>
-                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700">
+                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700 dark:text-gray-300 transition-colors duration-300">
                                 <li>Enhanced an <strong>abnormal activity detection</strong> pipeline for surveillance systems by fine-tuning the quantization mechanism used to learn a latent <strong>“normal action” dictionary</strong> and flag deviations as anomalous behavior.</li>
                                 <li>Reduced runtime latency by ~15%, enabling deployment on 20+ <strong>real-time CCTV</strong> feeds at Hankyu Nishinomiya Gardens Mall, Japan.</li>
                             </ul>
-                            <!-- Skills Pills -->
                             <div class="mt-5 flex flex-wrap gap-2">
-                                <span class="text-sm font-medium bg-red-100 text-red-800 px-3 py-1 rounded-full">Python</span>
-                                <span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Computer Vision</span>
-                                <span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Machine Learning</span>
-                                <span class="text-sm font-medium bg-red-100 text-red-800 px-3 py-1 rounded-full">Bash</span>
-                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">SSH</span>
-                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Git/Github</span>
-                                <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">scikit-learn</span>
-                                <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">OpenCV</span>
+                                <span class="text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-3 py-1 rounded-full transition-colors duration-300">Python</span>
+                                <span class="text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full transition-colors duration-300">Computer Vision</span>
+                                <span class="text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full transition-colors duration-300">Machine Learning</span>
+                                <span class="text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-3 py-1 rounded-full transition-colors duration-300">Bash</span>
+                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full transition-colors duration-300">SSH</span>
+                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full transition-colors duration-300">Git/Github</span>
+                                <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">scikit-learn</span>
+                                <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">OpenCV</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Timeline Item 6: GalaxEye Space -->
-                    <div class="relative">
-                        <!-- Timeline Dot (Adjusted border for gray bg) -->
-                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 flex items-center justify-center">
+                    <!-- MODIFIED: Added scroll-animate class -->
+                    <div class="relative scroll-animate">
+                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-gray-50 dark:border-gray-900 transition-colors duration-300 flex items-center justify-center">
                         </div>
                         <div class="ml-12">
                             <div class="flex justify-between items-start gap-4">
-                                <!-- Grouping title and date -->
                                 <div>
-                                    <h4 class="text-xl font-semibold text-gray-900">Image Processing Intern, GalaxEye Space</h4>
-                                    <p class="text-md text-gray-600 mt-1">Dec 2021 – Jan 2022 (Chennai, India)</p>
+                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Image Processing Intern, GalaxEye Space</h4>
+                                    <p class="text-md text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-300">Dec 2021 – Jan 2022 (Chennai, India)</p>
                                 </div>
-                                <img src="Assets/galaxeye-logo.png" alt="GalaxEye Space Logo" class="h-16 w-auto object-contain flex-shrink-0" /> <!-- CHANGED: h-12 to h-16 -->
+                                <img src="Assets/galaxeye-logo.png" alt="GalaxEye Space Logo" class="h-16 w-auto object-contain flex-shrink-0" /> 
                             </div>
-                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700">
+                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700 dark:text-gray-300 transition-colors duration-300">
                                 <li>Built a <strong>super-resolution</strong> neural network to upsample low-quality remote-sensing data in the form of SAR images, along with a <strong>generative model</strong> to predict RGB optical images from the super-resolved SAR output.</li>
                                 <li>Conducted experiments on cross-public datasets, leading to increased super-resolution quality even at <strong>scales up to 16x</strong>.</li>
                             </ul>
-                            <!-- Skills Pills -->
                             <div class="mt-5 flex flex-wrap gap-2">
-                                <span class="text-sm font-medium bg-red-100 text-red-800 px-3 py-1 rounded-full">Python</span>
-                                <span class="text-sm font-medium bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Generative Adversarial Networks (GANs)</span>
-                                <span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Computer Vision</span>
-                                <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">PyTorch</span>
-                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Git/Github</span>
-                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Docker</span>
-                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Weights & Biases</span>
+                                <span class="text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-3 py-1 rounded-full transition-colors duration-300">Python</span>
+                                <span class="text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full transition-colors duration-300">Generative Adversarial Networks (GANs)</span>
+                                <span class="text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full transition-colors duration-300">Computer Vision</span>
+                                <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">PyTorch</span>
+                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full transition-colors duration-300">Git/Github</span>
+                                <span class="text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full transition-colors duration-300">Docker</span>
+                                <span classs="text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full transition-colors duration-300">Weights & Biases</span>
                             </div>
                         </div>
                     </div>
@@ -403,52 +414,48 @@
         </div>
     </section>
 
-    <!-- MODIFIED: Added scroll-animate class -->
-    <section id="education" class="bg-white py-20 md:py-24 scroll-animate">
+    <!-- MODIFIED: Added dark mode classes and transitions -->
+    <section id="education" class="bg-white py-20 md:py-24 dark:bg-gray-800 transition-colors duration-300">
         <div class="container mx-auto px-6 max-w-7xl">
-            <h3 class="text-3xl font-bold text-center text-gray-900">Education</h3>
+            <h3 class="text-3xl font-bold text-center text-gray-900 dark:text-white transition-colors duration-300">Education</h3>
             
-            <div class="mt-16 max-w-5xl mx-auto"> <!-- CHANGED: max-w-3xl to max-w-5xl -->
+            <div class="mt-16 max-w-5xl mx-auto"> 
                 <div class="relative space-y-12">
                     
-                    <div class="absolute left-3.5 top-2 bottom-0 w-1 bg-blue-100 rounded" aria-hidden="true"></div>
+                    <div class="absolute left-3.5 top-2 bottom-0 w-1 bg-blue-100 rounded dark:bg-gray-700 transition-colors duration-300" aria-hidden="true"></div>
 
-                    <!-- Timeline Item 1: NYU -->
-                    <div class="relative">
-                        <!-- Timeline Dot (Adjusted border for white bg) -->
-                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-white flex items-center justify-center">
+                    <!-- MODIFIED: Added scroll-animate class -->
+                    <div class="relative scroll-animate">
+                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-white dark:border-gray-800 transition-colors duration-300 flex items-center justify-center">
                         </div>
                         <div class="ml-12">
                             <div class="flex justify-between items-start gap-4">
-                                <!-- Grouping title and date -->
                                 <div>
-                                    <h4 class="text-xl font-semibold text-gray-900">New York University (NYU), Tandon School of Engineering</h4>
-                                    <p class="text-md text-gray-600 mt-1">Sep 2023 – May 2025 (New York, NY)</p>
+                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">New York University (NYU), Tandon School of Engineering</h4>
+                                    <p class="text-md text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-300">Sep 2023 – May 2025 (New York, NY)</p>
                                 </div>
-                                <img src="Assets/nyu-logo.png" alt="NYU Logo" class="h-16 w-auto object-contain flex-shrink-0" /> <!-- CHANGED: h-12 to h-16 -->
+                                <img src="Assets/nyu-logo.png" alt="NYU Logo" class="h-16 w-auto object-contain flex-shrink-0" /> 
                             </div>
-                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700">
+                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700 dark:text-gray-300 transition-colors duration-300">
                                 <li><strong>M.S. in Computer Engineering</strong></li>
                                 <li>Cumulative GPA: 3.93/4.0</li>
                             </ul>
                         </div>
                     </div>
 
-                    <!-- Timeline Item 2: IIT Madras -->
-                    <div class="relative">
-                        <!-- Timeline Dot (Adjusted border for white bg) -->
-                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-white flex items-center justify-center">
+                    <!-- MODIFIED: Added scroll-animate class -->
+                    <div class="relative scroll-animate">
+                        <div class="absolute left-0 top-2 w-7 h-7 bg-blue-600 rounded-full border-4 border-white dark:border-gray-800 transition-colors duration-300 flex items-center justify-center">
                         </div>
                         <div class="ml-12">
                             <div class="flex justify-between items-start gap-4">
-                                <!-- Grouping title and date -->
                                 <div>
-                                    <h4 class="text-xl font-semibold text-gray-900">Indian Institute of Technology Madras (IITM)</h4>
-                                    <p class="text-md text-gray-600 mt-1">Aug 2018 – Jul 2023 (Chennai, India)</p>
+                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Indian Institute of Technology Madras (IITM)</h4>
+                                    <p class="text-md text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-300">Aug 2018 – Jul 2023 (Chennai, India)</p>
                                 </div>
-                                <img src="Assets/iit-madras-logo.png" alt="IIT Madras Logo" class="h-16 w-auto object-contain flex-shrink-0" /> <!-- CHANGED: h-1m -16 -->
+                                <img src="Assets/iit-madras-logo.png" alt="IIT Madras Logo" class="h-16 w-auto object-contain flex-shrink-0" /> 
                             </div>
-                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700">
+                            <ul class="mt-4 list-disc list-outside ml-5 space-y-2 text-gray-700 dark:text-gray-300 transition-colors duration-300">
                                 <li><strong>B.Tech in Mechanical Engineering & M.Tech in Robotics (Dual Degree)</strong></li>
                                 <li>Cumulative GPA: 3.51/4.0</li>
                                 <li>Minors in Computing, Artificial Intelligence & Machine Learning</li>
@@ -461,30 +468,25 @@
         </div>
     </section>
 
-    <!-- MODIFIED: Added scroll-animate class -->
-    <section id="projects" class="bg-gray-50 py-20 md:py-24 scroll-animate">
+    <!-- MODIFIED: Added dark mode classes and transitions -->
+    <section id="projects" class="bg-gray-50 py-20 md:py-24 scroll-animate dark:bg-gray-900 transition-colors duration-300">
         <div class="container mx-auto px-6 max-w-7xl">
-            <h3 class="text-3xl font-bold text-center text-gray-900">Featured Projects</h3>
-            <p class="text-lg text-gray-600 text-center mt-4 max-w-2xl mx-auto">
+            <h3 class="text-3xl font-bold text-center text-gray-900 dark:text-white transition-colors duration-300">Featured Projects</h3>
+            <p class="text-lg text-gray-600 dark:text-gray-400 text-center mt-4 max-w-2xl mx-auto transition-colors duration-300">
                 Here are some of the projects I'm proud of. Feel free to check them out.
             </p>
 
-            <!-- Project Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
                 
                 <!-- Project Card 1 -->
-                <!-- MODIFIED: Added 'group' class to enable group-hover -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 border border-gray-100 group">
-                    <!-- MODIFIED: Replaced single <img> with a <div> containing two stacked images -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 border border-gray-100 group dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300">
                     <div class="relative w-full h-56">
-                        <!-- Default Image (Visible by default) -->
                         <img 
                             src="Assets/project-u2nerf.jpeg" 
                             alt="Project U2NeRF" 
                             class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
                             onerror="this.src='https://placehold.co/600x400/dbeafe/1e3a8a?text=Project+One'; this.onerror=null;"
                         >
-                        <!-- Hover Image (Hidden by default, visible on card hover) -->
                         <img 
                             src="Assets/project-u2nerf-hover.jpeg" 
                             alt="Project U2NeRF Preview" 
@@ -493,45 +495,42 @@
                         >
                     </div>
                     <div class="p-6">
-                        <h4 class="text-xl font-semibold text-gray-900">U2NeRF (ICLR '24)</h4>
-                        <p class="text-gray-700 mt-2">Self-supervised transformer-based framework achieving joint underwater image restoration and 3D reconstruction, embedding physics-informed light modeling for realistic view synthesis.</p>
+                        <h4 class="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">U2NeRF (ICLR '24)</h4>
+                        <p class="text-gray-700 dark:text-gray-300 mt-2 transition-colors duration-300">Self-supervised transformer-based framework achieving joint underwater image restoration and 3D reconstruction, embedding physics-informed light modeling for realistic view synthesis.</p>
                         <div class="mt-4 flex flex-wrap gap-2">
-                            <span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">3D Reconstruction</span>
-                            <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">PyTorch</span>
-                            <span class="text-sm font-medium bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Neural Radiance Fields</span>
+                            <span class="text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full transition-colors duration-300">3D Reconstruction</span>
+                            <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">PyTorch</span>
+                            <span class="text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full transition-colors duration-300">Neural Radiance Fields</span>
                         </div>
-                        <!-- MODIFIED: Replaced single link with flex container -->
                         <div class="mt-6 flex justify-between items-center">
-                            <a href="#" class="inline-block text-blue-600 font-semibold hover:text-blue-800 transition-colors">
+                            <a href="#" class="inline-block text-blue-600 font-semibold hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300">
                                 Project Website &rarr;
                             </a>
                             <div class="flex space-x-4">
-                                <a href="#" class="text-gray-500 hover:text-blue-600 transition-colors" aria-label="GitHub">
+                                <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="GitHub">
                                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.109-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" clip-rule="evenodd"/>
                                     </svg>
                                 </a>
-                                <!-- MODIFIED: Replaced Paper icon with PPT icon -->
-                                <a href="#" class="text-gray-500 hover:text-blue-600 transition-colors" aria-label="Presentation">
+                                <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="Presentation">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2v6h6"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 18V9h2.5a2.5 2.5 0 010 5H11"></path>
                                     </svg>
                                 </a>
-                                <a href="#" class="text-gray-500 hover:text-blue-600 transition-colors" aria-label="Report"> <!-- Renamed to "Report" -->
+                                <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="Report"> 
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
                                 </a>
-                                <!-- REMOVED: The 2 extra duplicated icon blocks -->
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Project Card 2 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 border border-gray-100">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 border border-gray-100 dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300">
                     <img 
                         src="Assets/project-3dgs-enhancer.gif" 
                         alt="3D Gaussian Splatting Enhancer" 
@@ -539,33 +538,31 @@
                         onerror="this.src='https://placehold.co/600x400/d1fae5/065f46?text=Project+Two'; this.onerror=null;"
                     >
                     <div class="p-6">
-                        <h4 class="text-xl font-semibold text-gray-900">3DGS Enhancer for Sparse Views</h4>
-                        <p class="text-gray-700 mt-2">Diffusion-guided framework integrating 2D video priors with 3D Gaussian Splatting to improve sparse-view reconstruction, enhancing 3D view consistency through pose-conditioned feature alignment.</p>
+                        <h4 class="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">3DGS Enhancer for Sparse Views</h4>
+                        <p class="text-gray-700 dark:text-gray-300 mt-2 transition-colors duration-300">Diffusion-guided framework integrating 2D video priors with 3D Gaussian Splatting to improve sparse-view reconstruction, enhancing 3D view consistency through pose-conditioned feature alignment.</p>
                         <div class="mt-4 flex flex-wrap gap-2">
-                            <span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">3D Computer Vision</span>
-                            <span class="text-sm font-medium bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Video Diffusion</span>
-                            <span class="text-sm font-medium bg-green-100 text-green-800 px-3 py-1 rounded-full">PyTorch</span>
+                            <span class="text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full transition-colors duration-300">3D Computer Vision</span>
+                            <span class="text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full transition-colors duration-300">Video Diffusion</span>
+                            <span class="text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full transition-colors duration-300">PyTorch</span>
                         </div>
-                        <!-- MODIFIED: Replaced single link with flex container -->
                         <div class="mt-6 flex justify-between items-center">
-                            <a href="#" class="inline-block text-blue-600 font-semibold hover:text-blue-800 transition-colors">
+                            <a href="#" class="inline-block text-blue-600 font-semibold hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300">
                                 Project Website &rarr;
                             </a>
                             <div class="flex space-x-4">
-                                <a href="#" class="text-gray-500 hover:text-blue-600 transition-colors" aria-label="GitHub">
+                                <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="GitHub">
                                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.109-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" clip-rule="evenodd"/>
                                     </svg>
                                 </a>
-                                <!-- MODIFIED: Replaced Paper icon with PPT icon -->
-                                <a href="#" class="text-gray-500 hover:text-blue-600 transition-colors" aria-label="Presentation">
+                                <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="Presentation">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2v6h6"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 18V9h2.5a2.5 2.5 0 010 5H11"></path>
                                     </svg>
                                 </a>
-                                <a href="#" class="text-gray-500 hover:text-blue-600 transition-colors" aria-label="Report"> <!-- Renamed to "Report" -->
+                                <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="Report"> 
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
@@ -576,7 +573,7 @@
                 </div>
 
                 <!-- Project Card 3 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 border border-gray-100">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 border border-gray-100 dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300">
                     <img 
                         src="Assets/project-counterfactual.png" 
                         alt="Counterfactual Image Generation Using Text Guidance Project" 
@@ -584,33 +581,31 @@
                         onerror="this.src='https://placehold.co/600x400/fee2e2/991b1b?text=Project+Three'; this.onerror=null;"
                     >
                     <div class="p-6">
-                        <h4 class="text-xl font-semibold text-gray-900">Counterfactual Image Generation Using Text Guidance</h4>
-                        <p class="text-gray-700 mt-2">Text-guided counterfactual generation framework combining CLIP and Stable Diffusion to inpaint high-confidence regions, achieving fine-grained attribute manipulation while preserving over 90% of original content.</p>
+                        <h4 class="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">Counterfactual Image Generation Using Text Guidance</h4>
+                        <p class="text-gray-700 dark:text-gray-300 mt-2 transition-colors duration-300">Text-guided counterfactual generation framework combining CLIP and Stable Diffusion to inpaint high-confidence regions, achieving fine-grained attribute manipulation while preserving over 90% of original content.</p>
                         <div class="mt-4 flex flex-wrap gap-2">
-                            <span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Computer Vision</span>
-                            <span class="text-sm font-medium bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Stable Diffusion</span>
-                            <span class="text-sm font-medium bg-purple-100 text-purple-800 px-3 py-1 rounded-full">CLIP</span>
+                            <span class="text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full transition-colors duration-300">Computer Vision</span>
+                            <span class="text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full transition-colors duration-300">Stable Diffusion</span>
+                            <span class="text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full transition-colors duration-300">CLIP</span>
                         </div>
-                        <!-- MODIFIED: Replaced single link with flex container -->
                         <div class="mt-6 flex justify-between items-center">
-                            <a href="#" class="inline-block text-blue-600 font-semibold hover:text-blue-800 transition-colors">
+                            <a href="#" class="inline-block text-blue-600 font-semibold hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300">
                                 Project Website &rarr;
                             </a>
                             <div class="flex space-x-4">
-                                <a href="#" class="text-gray-500 hover:text-blue-600 transition-colors" aria-label="GitHub">
+                                <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="GitHub">
                                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.109-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" clip-rule="evenodd"/>
                                     </svg>
                                 </a>
-                                <!-- MODIFIED: Replaced Paper icon with PPT icon -->
-                                <a href="#" class="text-gray-500 hover:text-blue-600 transition-colors" aria-label="Presentation">
+                                <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="Presentation">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2v6h6"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 18V9h2.5a2.5 2.5 0 010 5H11"></path>
                                     </svg>
                                 </a>
-                                <a href="#" class="text-gray-500 hover:text-blue-600 transition-colors" aria-label="Report"> <!-- Renamed to "Report" -->
+                                <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="Report"> 
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
@@ -623,37 +618,35 @@
         </div>
     </section>
 
-    <!-- MODIFIED: Added scroll-animate class -->
-    <section id="contact" class="bg-white py-20 md:py-24 scroll-animate">
+    <!-- MODIFIED: Added dark mode classes and transitions -->
+    <section id="contact" class="bg-white py-20 md:py-24 scroll-animate dark:bg-gray-800 transition-colors duration-300">
         <div class="container mx-auto px-6 max-w-3xl text-center">
-            <h3 class="text-3xl font-bold text-gray-900">Get In Touch</h3>
-            <p class="text-lg text-gray-700 mt-4">
+            <h3 class="text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">Get In Touch</h3>
+            <p class="text-lg text-gray-700 dark:text-gray-300 mt-4 transition-colors duration-300">
                 I'm currently open to new opportunities and collaborations.. If you have a project in mind or just want to say hi, feel free to reach out!
             </p>
-            <a href="mailto:ms14845@nyu.edu" class="inline-block mt-8 px-8 py-4 bg-blue-600 text-white font-semibold text-lg rounded-lg shadow-md hover:bg-blue-700 transition-colors">
+            <a href="mailto:ms14845@nyu.edu" class="inline-block mt-8 px-8 py-4 bg-blue-600 text-white font-semibold text-lg rounded-lg shadow-md hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors duration-300">
                 Say Hello
             </a>
             
-            <!-- Social Links with Icons -->
+            <!-- MODIFIED: Added dark mode classes and transitions -->
             <div class="flex justify-center gap-8 mt-12">
-                <a href="https://linkedin.com/in/manoj-s-nyu" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-blue-600" aria-label="LinkedIn">
+                <a href="https://linkedin.com/in/manoj-s-nyu" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="LinkedIn">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/>
                     </svg>
                 </a>
-                <a href="https://github.com/manoj-152" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-blue-600" aria-label="GitHub">
+                <a href="https://github.com/manoj-152" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="GitHub">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path fill-rule="evenodd" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.109-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" clip-rule="evenodd"/>
                     </svg>
                 </a>
-                <!-- REPLACED Twitter with Email -->
-                <a href="mailto:ms14845@nyu.edu" class="text-gray-600 hover:text-blue-600" aria-label="Email">
+                <a href="mailto:ms14845@nyu.edu" class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="Email">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/>
                     </svg>
                 </a>
-                <!-- ADDED Google Scholar -->
-                <a href="https://scholar.google.com/citations?user=your-id" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-blue-600" aria-label="Google Scholar">
+                <a href="https://scholar.google.com/citations?user=your-id" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" aria-label="Google Scholar">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
                     </svg>
@@ -662,8 +655,8 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-400 py-8">
+    <!-- MODIFIED: Added dark mode classes and transitions -->
+    <footer class="bg-gray-800 text-gray-400 dark:bg-gray-950 dark:text-gray-500 py-8 transition-colors duration-300">
         <div class="container mx-auto px-6 text-center max-w-7xl">
             <p>&copy; 2025 Manoj Srinivasan. All rights reserved.</p>
             <p class="mt-2 text-sm">Built with HTML, Tailwind CSS, and a lot of coffee.</p>
@@ -691,31 +684,22 @@
         // Typing Animation
         document.addEventListener('DOMContentLoaded', function() {
             const titleEl = document.getElementById('typing-title');
-            // REMOVED: subtitleEl
             
             const titleText = "Hi, I'm Manoj Srinivasan";
-            // REMOVED: subtitleText
             
-            const typeSpeed = 50; // Speed of typing
-            // REMOVED: deleteSpeed and subtitleDelay
+            const typeSpeed = 50; 
             
-            // Add cursors
-            if (titleEl) { // Added check for null
+            if (titleEl) { 
                 titleEl.innerHTML = '<span class="typing-cursor"></span>';
             }
-            // REMOVED: subtitleEl.innerHTML
             
             async function typeWriter() {
-                // Type title
-                if (titleEl) { // Added check for null
+                if (titleEl) { 
                     for (let i = 0; i < titleText.length; i++) {
                         titleEl.innerHTML = titleText.substring(0, i + 1) + '<span class="typing-cursor"></span>';
                         await new Promise(r => setTimeout(r, typeSpeed));
                     }
-                    // REMOVED: Line that removes cursor
                 }
-                
-                // REMOVED: All subtitle typing logic
             }
             
             typeWriter();
@@ -723,7 +707,8 @@
 
         // Scroll Animation
         document.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('.scroll-animate');
+            // MODIFIED: Target individual timeline items
+            const sections = document.querySelectorAll('.scroll-animate, #experience .relative, #education .relative');
 
             if (!sections.length) return;
 
@@ -731,19 +716,63 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        // MODIFIED: Removed the unobserve line to allow re-animation
                     } else {
-                        // ADDED: This else block removes the class when out of view, resetting the animation
                         entry.target.classList.remove('is-visible');
                     }
                 });
             }, {
-                threshold: 0.1 // Triggers when 10% of the element is visible
+                threshold: 0.1 
             });
 
             sections.forEach(section => {
+                // ADDED: Add class so styles are applied before observation
+                if (!section.classList.contains('scroll-animate')) {
+                    section.classList.add('scroll-animate');
+                }
                 observer.observe(section);
             });
+        });
+
+        // ADDED: Dark Mode Toggle Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleMobileBtn = document.getElementById('theme-toggle-mobile');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+            const darkIconMobile = document.getElementById('theme-toggle-dark-icon-mobile');
+            const lightIconMobile = document.getElementById('theme-toggle-light-icon-mobile');
+
+            // Check if elements exist
+            if (themeToggleBtn && themeToggleMobileBtn && darkIcon && lightIcon && darkIconMobile && lightIconMobile) {
+                // Function to set the icon state
+                function setIcons(isDarkMode) {
+                    if (isDarkMode) {
+                        darkIcon.classList.add('hidden');
+                        lightIcon.classList.remove('hidden');
+                        darkIconMobile.classList.add('hidden');
+                        lightIconMobile.classList.remove('hidden');
+                    } else {
+                        darkIcon.classList.remove('hidden');
+                        lightIcon.classList.add('hidden');
+                        darkIconMobile.classList.remove('hidden');
+                        lightIconMobile.classList.add('hidden');
+                    }
+                }
+
+                // Set initial state
+                setIcons(document.documentElement.classList.contains('dark'));
+
+                // Toggle function
+                function toggleTheme() {
+                    const isDarkMode = document.documentElement.classList.toggle('dark');
+                    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+                    setIcons(isDarkMode);
+                }
+
+                // Add event listeners
+                themeToggleBtn.addEventListener('click', toggleTheme);
+                themeToggleMobileBtn.addEventListener('click', toggleTheme);
+            }
         });
     </script>
 
